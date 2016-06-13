@@ -762,12 +762,10 @@
       scope: {
         priorities: '@csPriorities',
         only: '@csOnly',
-        except: '@csExcept'
+        except: '@csExcept',
+        placeholder: '@?csPlaceholder'
       },
-      template: '<select>' +
-                  '<option value="" ng-if="isSelectionOptional"></option>' +
-                  '<option ng-repeat="country in ::countries" value="{{country.code}}" ng-disabled="country.disabled">{{country.name}}</option>' +
-                '</select>',
+      template: '<select ng-options="country.code as country.name for country in countries"> <option value="" ng-if="isSelectionOptional">{{ placeholder }}</option> </select>',
       controller: [
         '$scope', '$attrs', function($scope, $attrs) {
           var countryCodesIn, findCountriesIn, includeOnlyRequestedCountries, removeCountry, removeExcludedCountries, separator, updateWithPriorityCountries;
@@ -776,6 +774,7 @@
             name: '────────────────────',
             disabled: true
           };
+          $scope.placeholder = angular.isDefined($scope.placeholder) ? $scope.placeholder : '';
           countryCodesIn = function(codesString) {
             var codes;
             codes = codesString ? codesString.split(',') : [];
